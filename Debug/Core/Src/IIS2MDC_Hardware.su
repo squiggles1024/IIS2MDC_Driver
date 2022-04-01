@@ -1,0 +1,7 @@
+../Drivers/CMSIS/Include/core_cm33.h:2127:22:__NVIC_EnableIRQ	16	static,ignoring_inline_asm
+../Drivers/CMSIS/Include/core_cm33.h:2165:22:__NVIC_DisableIRQ	16	static,ignoring_inline_asm
+../Core/Src/IIS2MDC_Hardware.c:37:13:IIS2MDC_Init	8	static
+../Core/Src/IIS2MDC_Hardware.c:44:13:IIS2MDC_DeInit	8	static
+../Core/Src/IIS2MDC_Hardware.c:50:25:IIS2MDC_WriteReg	32	static
+../Core/Src/IIS2MDC_Hardware.c:59:25:IIS2MDC_ReadReg	32	static
+../Core/Src/IIS2MDC_Hardware.c:68:16:IIS2MDC_ioctl	24	static
