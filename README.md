@@ -10,6 +10,7 @@ IIS2MDC_Hardware.h: Hardware specific header file - Should not need modification
 IIS2MDC_Hardware.c: Hardware specific source file - User must implement this file for their board/project needs
 
 To Use:
+
 0. Include IIS2MDC.h
 1. Create an IIS2MDC_Init_Struct_t with desired user settings.
 2. Create an IIS2MDC_IO_Drv_t with necessary low level IO functions (I2C/SPI, GPIO Communication functions).
