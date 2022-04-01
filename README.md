@@ -18,3 +18,5 @@ To Use:
 4. Pass the init struct, IO Driver, and device handle to IIS2MDC_Init()
 5. Functions listed in IIS2MDC.h can now be used by passing the initialized device handle as a function arguement
 Above example was implemented on an STM32U5 processor (b-u585i-iot02a discovery board)
+
+Logging functions may be removed and replaced with user code.
