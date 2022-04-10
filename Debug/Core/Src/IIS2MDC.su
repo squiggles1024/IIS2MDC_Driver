@@ -1,8 +1,8 @@
-../Core/Src/IIS2MDC.c:35:6:IIS2MDC_Init	24	static
-../Core/Src/IIS2MDC.c:128:6:IIS2MDC_DeInit	16	static
-../Core/Src/IIS2MDC.c:141:6:IIS2MDC_Reset	24	static
-../Core/Src/IIS2MDC.c:156:6:IIS2MDC_StartConversion	24	static
-../Core/Src/IIS2MDC.c:178:27:IIS2MDC_ReadMagnetic	24	static
-../Core/Src/IIS2MDC.c:205:6:IIS2MDC_ReadReg	24	static
-../Core/Src/IIS2MDC.c:219:6:IIS2MDC_WriteReg	24	static
-../Core/Src/IIS2MDC.c:236:13:ConvertMagnetic	24	static
+../Core/Src/IIS2MDC.c:41:6:IIS2MDC_Init	24	static
+../Core/Src/IIS2MDC.c:138:6:IIS2MDC_DeInit	16	static
+../Core/Src/IIS2MDC.c:156:6:IIS2MDC_Reset	24	static
+../Core/Src/IIS2MDC.c:171:6:IIS2MDC_StartConversion	24	static
+../Core/Src/IIS2MDC.c:193:27:IIS2MDC_ReadMagnetic	24	static
+../Core/Src/IIS2MDC.c:221:6:IIS2MDC_ReadReg	24	static
+../Core/Src/IIS2MDC.c:235:6:IIS2MDC_WriteReg	24	static
+../Core/Src/IIS2MDC.c:252:13:ConvertMagnetic	24	static
