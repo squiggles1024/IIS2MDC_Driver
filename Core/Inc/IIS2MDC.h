@@ -90,9 +90,9 @@ typedef enum{
 typedef struct{
 	IIS2MDC_IO_Drv_t IIS2MDC_IO;
 	IIS2MDC_DataReadyStatus_t DataReadyFlag;
-	float MagX;
-	float MagY;
-	float MagZ;
+	int16_t MagX;
+	int16_t MagY;
+	int16_t MagZ;
 }IIS2MDC_Handle_t;
 
 typedef struct{
@@ -146,9 +146,6 @@ typedef struct{
 #define IIS2MDC_REG_TEMP_OUT_L_REG (0x6EU)
 #define IIS2MDC_REG_TEMP_OUT_H_REG (0x6FU)
 
-/**************************************//**************************************//**************************************
- * Public Function Prototypes
- **************************************//**************************************//**************************************/
 
 /**************************************//**************************************//**************************************
  * Public Function Prototypes

@@ -61,5 +61,20 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+void IIS2MDC_GPIO_Init(void){
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+	  __HAL_RCC_GPIOH_CLK_ENABLE();
+	  __HAL_RCC_GPIOD_CLK_ENABLE();
+
+	  /*Configure GPIO pin : PtPin */
+	  GPIO_InitStruct.Pin = IIS2MDC_IRQ_Pin;
+	  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  HAL_GPIO_Init(IIS2MDC_IRQ_GPIO_Port, &GPIO_InitStruct);
+
+	  /* EXTI interrupt init*/
+	  HAL_NVIC_SetPriority(EXTI10_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(EXTI10_IRQn);
+}
 /* USER CODE END 2 */

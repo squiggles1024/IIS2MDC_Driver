@@ -9,10 +9,7 @@
  **************************************//**************************************//**************************************/
 #include "IIS2MDC.h"
 #include "log.h"
-/**************************************//**************************************//**************************************
- * Typedefs / Enumerations
- **************************************//**************************************//**************************************/
-
+#include "stddef.h"
 /**************************************//**************************************//**************************************
  * Private Function Prototypes
  **************************************//**************************************//**************************************/
@@ -21,6 +18,15 @@ static void ConvertMagnetic(IIS2MDC_Handle_t *Dev,uint8_t *pdata);
  * Defines / Constants
  **************************************//**************************************//**************************************/
 static const uint8_t IIS2MDC_DEVICE_ID = 0x40;
+static const float CALIBRATION_MATRIX_A11 = 1.206096;
+static const float CALIBRATION_MATRIX_A12 = 0.026751;
+static const float CALIBRATION_MATRIX_A13 = 0.001434;
+static const float CALIBRATION_MATRIX_A21 = 0.026751;
+static const float CALIBRATION_MATRIX_A22 = 1.269714;
+static const float CALIBRATION_MATRIX_A23 = 0.015582;
+static const float CALIBRATION_MATRIX_A31 = 0.001434;
+static const float CALIBRATION_MATRIX_A32 = 0.015582;
+static const float CALIBRATION_MATRIX_A33 = 1.478172;
 /**************************************//**************************************//**************************************
  * Public Function Definitions
  **************************************//**************************************//**************************************/
@@ -40,7 +46,9 @@ void IIS2MDC_Init(IIS2MDC_InitStruct_t Settings, IIS2MDC_Handle_t *Dev, IIS2MDC_
 	Dev->IIS2MDC_IO.ioctl = LowLevelDrivers.ioctl;
 	Dev->IIS2MDC_IO.Init();
 
-	Dev->IIS2MDC_IO.ioctl(IIS2MDC_IRQDisable);
+	if(Settings.IntPinMode != IIS2MDC_IntSignalDisabled){
+		Dev->IIS2MDC_IO.ioctl(IIS2MDC_IRQDisable);
+	}
 
 	uint8_t buffer8;
 	uint16_t buffer16;
@@ -112,7 +120,9 @@ void IIS2MDC_Init(IIS2MDC_InitStruct_t Settings, IIS2MDC_Handle_t *Dev, IIS2MDC_
 		_log(log_iis2mdc, "Initialization: Reading Data Reg Failed.");
 	}
 
-	Dev->IIS2MDC_IO.ioctl(IIS2MDC_IRQEnable);
+	if(Settings.IntPinMode != IIS2MDC_IntSignalDisabled){
+		Dev->IIS2MDC_IO.ioctl(IIS2MDC_IRQEnable);
+	}
 
 
 }
@@ -128,6 +138,11 @@ void IIS2MDC_Init(IIS2MDC_InitStruct_t Settings, IIS2MDC_Handle_t *Dev, IIS2MDC_
 void IIS2MDC_DeInit(IIS2MDC_Handle_t *Dev){
 	IIS2MDC_Reset(Dev);
 	Dev->IIS2MDC_IO.DeInit();
+	Dev->IIS2MDC_IO.DeInit = NULL;
+	Dev->IIS2MDC_IO.Init = NULL;
+	Dev->IIS2MDC_IO.WriteReg = NULL;
+	Dev->IIS2MDC_IO.ReadReg = NULL;
+	Dev->IIS2MDC_IO.ioctl = NULL;
 }
 
 
@@ -185,6 +200,7 @@ IIS2MDC_DataReadyStatus_t IIS2MDC_ReadMagnetic(IIS2MDC_Handle_t *Dev){
 		return IIS2MDC_DataNotReady;
 	}
 
+	Dev->DataReadyFlag = IIS2MDC_DataReady;
 	if(Dev->IIS2MDC_IO.ReadReg(IIS2MDC_REG_OUTX_L_REG, buffer,6) != IIS2MDC_Ok){
 		_log(log_iis2mdc, "Reading Data Regs Failed.");
 	}
@@ -237,8 +253,9 @@ static void ConvertMagnetic(IIS2MDC_Handle_t *Dev, uint8_t *pdata){
 	int16_t MagX = ((int8_t)pdata[1] << 8) |  ((int8_t)pdata[0] << 0);
 	int16_t MagY = ((int8_t)pdata[3] << 8) |  ((int8_t)pdata[2] << 0);
 	int16_t MagZ = ((int8_t)pdata[5] << 8) |  ((int8_t)pdata[4] << 0);
-	Dev->MagX = MagX * 1.5;
-	Dev->MagY = MagY * 1.5;
-	Dev->MagZ = MagZ * 1.5;
+	Dev->MagX = (MagX * CALIBRATION_MATRIX_A11 + MagY * CALIBRATION_MATRIX_A12 + MagZ * CALIBRATION_MATRIX_A13);
+	Dev->MagY = (MagX * CALIBRATION_MATRIX_A21 + MagY * CALIBRATION_MATRIX_A22 + MagZ * CALIBRATION_MATRIX_A23);
+	Dev->MagZ = (MagX * CALIBRATION_MATRIX_A31 + MagY * CALIBRATION_MATRIX_A32 + MagZ * CALIBRATION_MATRIX_A33);
 }
+
 
